@@ -34,7 +34,7 @@ var mapArray = (users: UserData[]) => {
     }) as ListItem[];
 };
 
-var mapTLead = tlead => {
+var mapTeamLead = (teamLead: UserData) => {
     var columns = [
         {
             key: 'Team Lead',
@@ -42,34 +42,29 @@ var mapTLead = tlead => {
         },
         {
             key: 'Name',
-            value: `${tlead.firstName} ${tlead.lastName}`,
+            value: `${teamLead.firstName} ${teamLead.lastName}`,
         },
         {
             key: 'Display Name',
-            value: tlead.displayName,
+            value: teamLead.displayName,
         },
         {
             key: 'Location',
-            value: tlead.location,
+            value: teamLead.location,
         },
     ];
-    return <Card columns={columns} url={`/user/${tlead.id}`} navigationProps={tlead} />;
+    return <Card columns={columns} url={`/user/${teamLead.id}`} navigationProps={teamLead} />;
 };
 
-interface PageState {
-    teamLead?: UserData;
-    teamMembers?: UserData[];
-}
-
-const TeamOverview = () => {
-    const location = useLocation();
+const TeamOverview: React.FC = () => {
+    const {state: {name}} = useLocation();
 
     const {pageData, isLoading} = React.useContext(AppContext);
 
     return (
         <Container>
-            <Header title={`Team ${location.state.name}`} />
-            {!isLoading && mapTLead(pageData.teamLead)}
+            <Header title={`Team ${name}`} />
+            {!isLoading && mapTeamLead(pageData.teamLead)}
             <List items={mapArray(pageData?.teamMembers ?? [])} />
         </Container>
     );

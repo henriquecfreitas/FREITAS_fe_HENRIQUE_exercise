@@ -7,7 +7,7 @@ import TeamOverview from '@Pages/TeamOverview';
 import Teams from '@Pages/Teams';
 import UserOverview from '@Pages/UserOverview';
 
-const App = () => {
+const App: React.FC = () => {
     var router = createBrowserRouter([
         {
             path: '/',

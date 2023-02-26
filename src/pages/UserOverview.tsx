@@ -7,32 +7,31 @@ import Card from '@Components/Card';
 import {Container} from '@Components/GlobalComponents';
 import Header from '@Components/Header';
 
-var mapU = (user: UserData) => {
-    var columns = [
-        {
-            key: 'Name',
-            value: `${user.firstName} ${user.lastName}`,
-        },
-        {
-            key: 'Display Name',
-            value: user.displayName,
-        },
-        {
-            key: 'Location',
-            value: user.location,
-        },
-    ];
-    return <Card columns={columns} hasNavigation={false} navigationProps={user} />;
-};
+var cardColumns = (user: UserData) => [
+    {
+        key: 'Name',
+        value: `${user.firstName} ${user.lastName}`,
+    },
+    {
+        key: 'Display Name',
+        value: user.displayName,
+    },
+    {
+        key: 'Location',
+        value: user.location,
+    },
+];
 
-const UserOverview = () => {
-    const location = useLocation();
+const UserOverview: React.FC = () => {
+    const {state: user} = useLocation();
+    const columns = cardColumns(user);
+
     return (
         <Container>
             <Header
-                title={`User ${location.state.firstName} ${location.state.lastName}`}
+                title={`User ${user.firstName} ${user.lastName}`}
             />
-            {mapU(location.state)}
+            <Card columns={columns} hasNavigation={false} navigationProps={user} />
         </Container>
     );
 };

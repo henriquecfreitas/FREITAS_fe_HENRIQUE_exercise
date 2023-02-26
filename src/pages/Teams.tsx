@@ -8,8 +8,7 @@ import Header from '@Components/Header';
 import List from '@Components/List';
 import {Container} from '@Components/GlobalComponents';
 
-
-var MapT = (teams: TeamsList[]) => {
+var mapTeams = (teams: TeamsList[]) => {
     return teams.map(team => {
         var columns = [
             {
@@ -26,13 +25,13 @@ var MapT = (teams: TeamsList[]) => {
     });
 };
 
-const Teams = () => {
+const Teams: React.FC = () => {
     const {teams} = React.useContext(AppContext)
 
     return (
         <Container>
             <Header title="Teams" showBackButton={false} />
-            <List items={MapT(teams)} />
+            <List items={mapTeams(teams)} />
         </Container>
     );
 };

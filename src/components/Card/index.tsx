@@ -5,24 +5,26 @@ import {Teams, UserData} from '@Types';
 
 import {Container} from './styles';
 
+interface Column {
+    key: string;
+    value: string;    
+}
+
 interface Props {
     id?: string;
     url?: string;
-    columns: Array<{
-        key: string;
-        value: string;
-    }>;
+    columns: Column[];
     hasNavigation?: boolean;
     navigationProps?: UserData | Teams;
 }
 
-const Card = ({
+const Card: React.FC<Props> = ({
     id,
     columns,
     url,
     hasNavigation = true,
     navigationProps = null,
-}: Props): JSX.Element => {
+}): JSX.Element => {
     const navigate = useNavigate();
 
     return (

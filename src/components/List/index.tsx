@@ -13,7 +13,10 @@ interface Props {
     hasNavigation?: boolean;
 }
 
-const List = ({items, hasNavigation = true}: Props) => {
+const List: React.FC<Props> = ({
+    items,
+    hasNavigation = true
+}) => {
     const {isLoading} = React.useContext(AppContext)
 
     return (

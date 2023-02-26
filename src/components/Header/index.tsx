@@ -8,7 +8,10 @@ interface Props {
     showBackButton?: boolean;
 }
 
-const Header = ({title, showBackButton = true}: Props) => {
+const Header: React.FC<Props> = ({
+    title,
+    showBackButton = true
+}) => {
     const navigate = useNavigate();
     return (
         <HeaderContainer>

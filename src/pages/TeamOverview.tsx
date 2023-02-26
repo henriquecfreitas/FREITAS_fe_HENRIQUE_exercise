@@ -1,11 +1,13 @@
 import * as React from 'react';
 import {useLocation, useParams} from 'react-router-dom';
-import {ListItem, UserData} from 'types';
-import {getTeamOverview, getUserData} from '../api';
-import Card from '../components/Card';
-import {Container} from '../components/GlobalComponents';
-import Header from '../components/Header';
-import List from '../components/List';
+
+import {ListItem, UserData} from '@Types';
+import {getTeamOverview, getUserData} from '@API';
+
+import Card from '@Components/Card';
+import {Container} from '@Components/GlobalComponents';
+import Header from '@Components/Header';
+import List from '@Components/List';
 
 var mapArray = (users: UserData[]) => {
     return users.map(u => {

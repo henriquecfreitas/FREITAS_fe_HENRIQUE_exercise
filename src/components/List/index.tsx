@@ -1,7 +1,9 @@
 import * as React from 'react';
-import {ListItem} from 'types';
-import Card from '../Card';
-import {Spinner} from '../Spinner';
+import {ListItem} from '@Types';
+
+import Card from '@Components/Card';
+import {Spinner} from '@Components/Spinner';
+
 import {Container} from './styles';
 
 interface Props {

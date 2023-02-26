@@ -1,6 +1,6 @@
 import * as React from 'react';
 import {render, screen, waitFor} from '@testing-library/react';
-import * as API from '../../api';
+import * as API from '@API';
 import TeamOverview from '../TeamOverview';
 
 jest.mock('react-router-dom', () => ({

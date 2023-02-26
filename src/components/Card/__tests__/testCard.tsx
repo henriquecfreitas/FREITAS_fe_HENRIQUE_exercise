@@ -1,6 +1,6 @@
 import React from 'react';
 import {fireEvent, render, screen} from '@testing-library/react';
-import {Teams} from 'types';
+import {Teams} from '@Types';
 import Card from '..';
 
 const mockUseNavigate = jest.fn();

@@ -1,7 +1,7 @@
 import * as React from 'react';
 import {ListItem} from '@Types';
 
-import { AppContext } from '@Context';
+import {AppContext} from '@Context';
 
 import Card from '@Components/Card';
 import {Spinner} from '@Components/Spinner';
@@ -15,9 +15,9 @@ interface Props {
 
 const List: React.FC<Props> = ({
     items,
-    hasNavigation = true
+    hasNavigation = true,
 }) => {
-    const {isLoading} = React.useContext(AppContext)
+    const {isLoading} = React.useContext(AppContext);
 
     return (
         <Container>

@@ -10,7 +10,7 @@ interface Props {
 
 const Header: React.FC<Props> = ({
     title,
-    showBackButton = true
+    showBackButton = true,
 }) => {
     const navigate = useNavigate();
     return (

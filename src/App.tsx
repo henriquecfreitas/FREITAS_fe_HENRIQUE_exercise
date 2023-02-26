@@ -26,7 +26,7 @@ const App: React.FC = () => {
         <AppContextProvider>
             <RouterProvider router={router} />;
         </AppContextProvider>
-    )
+    );
 };
 
 export default App;

@@ -1,4 +1,4 @@
-import React from "react"
+import React from 'react';
 
 import {PageState, Teams} from '@Types';
 
@@ -8,4 +8,4 @@ interface AppState {
   teams: Teams[],
 }
 
-export default React.createContext<AppState>(null)
+export default React.createContext<AppState>(null);

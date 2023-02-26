@@ -1,13 +1,13 @@
-import React, { PropsWithChildren, useState } from "react";
-import { useParams } from "react-router-dom";
+import React, {PropsWithChildren, useState} from 'react';
+import {useParams} from 'react-router-dom';
 
 import {
   getTeamOverview,
   getUserData,
-  getTeams as fetchTeams
+  getTeams as fetchTeams,
 } from '@API';
 
-import AppContext from "./AppContext";
+import AppContext from './AppContext';
 
 const AppContextProvider: React.FC<PropsWithChildren> = ({children}) => {
   const {teamId} = useParams();
@@ -21,10 +21,10 @@ const AppContextProvider: React.FC<PropsWithChildren> = ({children}) => {
 
     setIsLoading(true);
     (async () => {
-        const teams = await fetchTeams();
-        if (isAborted) return;
+        const _teams = await fetchTeams();
+        if (isAborted) {return;}
 
-        setTeams(teams);
+        setTeams(_teams);
     })().then(() => {
       setIsLoading(false);
     });
@@ -40,21 +40,21 @@ const AppContextProvider: React.FC<PropsWithChildren> = ({children}) => {
       setIsLoading(true);
       (async () => {
           const {teamLeadId, teamMemberIds = []} = await getTeamOverview(teamId);
-          if (isAborted) return;
+          if (isAborted) {return;}
 
           const teamLead = await getUserData(teamLeadId);
-          if (isAborted) return;
+          if (isAborted) {return;}
 
           const teamMembers = [];
           for(var teamMemberId of teamMemberIds) {
               const data = await getUserData(teamMemberId);
               teamMembers.push(data);
           }
-          if (isAborted) return;
+          if (isAborted) {return;}
 
           setPageData({
               teamLead,
-              teamMembers
+              teamMembers,
           });
       })().then(() => {
         setIsLoading(false);
@@ -68,7 +68,7 @@ const AppContextProvider: React.FC<PropsWithChildren> = ({children}) => {
   return <AppContext.Provider value={{
     isLoading,
     pageData,
-    teams
+    teams,
   }}>
     {children}
   </AppContext.Provider>;

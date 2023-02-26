@@ -2,7 +2,7 @@ import * as React from 'react';
 
 import {ListItem, Teams as TeamsList} from '@Types';
 
-import { AppContext } from '@Context';
+import {AppContext} from '@Context';
 
 import Header from '@Components/Header';
 import List from '@Components/List';
@@ -26,7 +26,7 @@ var mapTeams = (teams: TeamsList[]) => {
 };
 
 const Teams: React.FC = () => {
-    const {teams} = React.useContext(AppContext)
+    const {teams} = React.useContext(AppContext);
 
     return (
         <Container>

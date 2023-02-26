@@ -1,6 +1,8 @@
 import * as React from 'react';
 import {ListItem} from '@Types';
 
+import { AppContext } from '@Context';
+
 import Card from '@Components/Card';
 import {Spinner} from '@Components/Spinner';
 
@@ -9,10 +11,11 @@ import {Container} from './styles';
 interface Props {
     items?: ListItem[];
     hasNavigation?: boolean;
-    isLoading: string;
 }
 
-const List = ({items, hasNavigation = true, isLoading}: Props) => {
+const List = ({items, hasNavigation = true}: Props) => {
+    const {isLoading} = React.useContext(AppContext)
+
     return (
         <Container>
             {isLoading && <Spinner />}

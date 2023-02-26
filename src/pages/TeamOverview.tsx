@@ -1,8 +1,8 @@
 import * as React from 'react';
-import {useLocation, useParams} from 'react-router-dom';
+import {useLocation} from 'react-router-dom';
 
 import {ListItem, UserData} from '@Types';
-import {getTeamOverview, getUserData} from '@API';
+import {AppContext} from '@Context';
 
 import Card from '@Components/Card';
 import {Container} from '@Components/GlobalComponents';
@@ -63,34 +63,14 @@ interface PageState {
 
 const TeamOverview = () => {
     const location = useLocation();
-    const {teamId} = useParams();
-    const [pageData, setPageData] = React.useState<PageState>({});
-    const [isLoading, setIsLoading] = React.useState<boolean>(true);
 
-    React.useEffect(() => {
-        var getTeamUsers = async () => {
-            const {teamLeadId, teamMemberIds = []} = await getTeamOverview(teamId);
-            const teamLead = await getUserData(teamLeadId);
-
-            const teamMembers = [];
-            for(var teamMemberId of teamMemberIds) {
-                const data = await getUserData(teamMemberId);
-                teamMembers.push(data);
-            }
-            setPageData({
-                teamLead,
-                teamMembers,
-            });
-            setIsLoading(false);
-        };
-        getTeamUsers();
-    }, [teamId]);
+    const {pageData, isLoading} = React.useContext(AppContext);
 
     return (
         <Container>
             <Header title={`Team ${location.state.name}`} />
             {!isLoading && mapTLead(pageData.teamLead)}
-            <List items={mapArray(pageData?.teamMembers ?? [])} isLoading={isLoading} />
+            <List items={mapArray(pageData?.teamMembers ?? [])} />
         </Container>
     );
 };

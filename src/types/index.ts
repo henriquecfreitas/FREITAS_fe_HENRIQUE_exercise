@@ -29,3 +29,8 @@ export interface ListItem {
     columns: Array<ListItemColumn>;
     navigationProps?: UserData | Teams;
 }
+
+export interface PageState {
+    teamLead?: UserData;
+    teamMembers?: UserData[];
+}

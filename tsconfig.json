@@ -17,8 +17,10 @@
     "outDir": "dist",
     "paths": {
       "@API": ["./api"],
-      "@Types": ["./types"],
       "@Components/*": ["./components/*"],
+      "@Context": ["./contexts"],
+      "@ContextProvider": ["./contexts/providers.ts"],
+      "@Types": ["./types"],
       "@Pages/*": ["./pages/*"],
     }
   },

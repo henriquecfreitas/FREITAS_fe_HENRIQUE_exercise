@@ -1,7 +1,8 @@
 import * as React from 'react';
 
 import {ListItem, Teams as TeamsList} from '@Types';
-import {getTeams as fetchTeams} from '@API';
+
+import { AppContext } from '@Context';
 
 import Header from '@Components/Header';
 import List from '@Components/List';
@@ -26,22 +27,12 @@ var MapT = (teams: TeamsList[]) => {
 };
 
 const Teams = () => {
-    const [teams, setTeams] = React.useState<any>([]);
-    const [isLoading, setIsLoading] = React.useState<any>(true);
-
-    React.useEffect(() => {
-        const getTeams = async () => {
-            const response = await fetchTeams();
-            setTeams(response);
-            setIsLoading(false);
-        };
-        getTeams();
-    }, []);
+    const {teams} = React.useContext(AppContext)
 
     return (
         <Container>
             <Header title="Teams" showBackButton={false} />
-            <List items={MapT(teams)} isLoading={isLoading} />
+            <List items={MapT(teams)} />
         </Container>
     );
 };

@@ -1,4 +1,4 @@
-import React from 'react';
+import * as React from 'react';
 import {render, screen} from '@testing-library/react';
 import List from '..';
 
@@ -8,7 +8,13 @@ jest.mock('react-router-dom', () => ({
 }));
 
 describe('List', () => {
+    let useContextSpy;
+    beforeEach(() => {
+        useContextSpy = jest.spyOn(React, "useContext");
+    });
+
     it('should render spinner and not render items when it is loading', () => {
+        useContextSpy.mockReturnValue({isLoading: true});
         const items = [
             {
                 id: '1',
@@ -27,6 +33,7 @@ describe('List', () => {
     });
 
     it('should not render spinner and render items when it is not loading', () => {
+        useContextSpy.mockReturnValue({isLoading: false});
         const items = [
             {
                 id: '1',
@@ -45,6 +52,7 @@ describe('List', () => {
     });
 
     it('should render multiple card when multiple items', () => {
+        useContextSpy.mockReturnValue({isLoading: false});
         const items = [
             {
                 id: '1',

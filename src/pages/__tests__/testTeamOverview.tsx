@@ -1,6 +1,5 @@
 import * as React from 'react';
 import {render, screen, waitFor} from '@testing-library/react';
-import * as API from '@API';
 import TeamOverview from '../TeamOverview';
 
 jest.mock('react-router-dom', () => ({
@@ -16,6 +15,11 @@ jest.mock('react-router-dom', () => ({
 }));
 
 describe('TeamOverview', () => {
+    let useContextSpy;
+    beforeEach(() => {
+        useContextSpy = jest.spyOn(React, "useContext");
+    });
+
     beforeAll(() => {
         jest.useFakeTimers();
     });
@@ -29,12 +33,7 @@ describe('TeamOverview', () => {
     });
 
     it('should render team overview users', async () => {
-        const teamOverview = {
-            id: '1',
-            teamLeadId: '2',
-            teamMemberIds: ['3', '4', '5'],
-        };
-        const userData = {
+        const teamLead = {
             id: '2',
             firstName: 'userData',
             lastName: 'userData',
@@ -42,8 +41,23 @@ describe('TeamOverview', () => {
             location: '',
             avatar: '',
         };
-        jest.spyOn(API, 'getTeamOverview').mockImplementationOnce(() => Promise.resolve({} as any));
-        jest.spyOn(API, 'getUserData').mockImplementationOnce(() => Promise.resolve({} as any));
+
+        const teamMembers = ['3', '4', '5'].map(id => ({
+            id,
+            firstName: 'userData',
+            lastName: 'userData',
+            displayName: 'userData',
+            location: '',
+            avatar: '',
+        }));
+
+        useContextSpy.mockReturnValue({
+            isLoading: false,
+            teamPageData: {
+                teamLead,
+                teamMembers,
+            },
+        });
 
         render(<TeamOverview />);
 

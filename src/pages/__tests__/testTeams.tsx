@@ -1,6 +1,5 @@
 import * as React from 'react';
-import {fireEvent, render, screen, waitFor, act} from '@testing-library/react';
-import * as API from '@API';
+import {render, screen} from '@testing-library/react';
 import Teams from '../Teams';
 
 jest.mock('react-router-dom', () => ({
@@ -16,6 +15,11 @@ jest.mock('react-router-dom', () => ({
 }));
 
 describe('Teams', () => {
+    let useContextSpy;
+    beforeEach(() => {
+        useContextSpy = jest.spyOn(React, "useContext");
+    });
+
     beforeAll(() => {
         jest.useFakeTimers();
     });
@@ -33,7 +37,7 @@ describe('Teams', () => {
     });
 
     it('should render teams list', async () => {
-        jest.spyOn(API, 'getTeams').mockResolvedValue([
+        useContextSpy.mockReturnValue({teams: [
             {
                 id: '1',
                 name: 'Team1',
@@ -42,13 +46,11 @@ describe('Teams', () => {
                 id: '2',
                 name: 'Team2',
             },
-        ]);
+        ]});
 
         render(<Teams />);
 
-        await waitFor(() => {
-            expect(screen.getByText('Team1')).toBeInTheDocument();
-        });
+        expect(screen.getByText('Team1')).toBeInTheDocument();
         expect(screen.getByText('Team2')).toBeInTheDocument();
     });
 });

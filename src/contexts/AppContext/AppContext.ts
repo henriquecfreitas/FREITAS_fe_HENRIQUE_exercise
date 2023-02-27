@@ -1,10 +1,10 @@
 import React from 'react';
 
-import {PageState, Teams} from '@Types';
+import {TeamPageData, Teams} from '@Types';
 
 interface AppState {
   isLoading: boolean,
-  pageData: PageState,
+  teamPageData: TeamPageData,
   teams: Teams[],
 }
 

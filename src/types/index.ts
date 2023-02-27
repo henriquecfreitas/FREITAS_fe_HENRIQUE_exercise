@@ -30,7 +30,7 @@ export interface ListItem {
     navigationProps?: UserData | Teams;
 }
 
-export interface PageState {
+export interface TeamPageData {
     teamLead?: UserData;
     teamMembers?: UserData[];
 }

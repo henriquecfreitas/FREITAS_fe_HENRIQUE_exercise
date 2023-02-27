@@ -6,15 +6,19 @@ import {
   getUserData,
   getTeams as fetchTeams,
 } from '@API';
+import {UserData, Teams} from '@Types';
 
 import AppContext from './AppContext';
 
 const AppContextProvider: React.FC<PropsWithChildren> = ({children}) => {
   const {teamId} = useParams();
 
+  const [currentTeamId, setCurrentTeamId] = useState<string>(undefined);
+
   const [isLoading, setIsLoading] = useState(false);
-  const [pageData, setPageData] = useState({});
-  const [teams, setTeams] = useState([]);
+  const [teamLead, setTeamLead] = useState<UserData>(undefined);
+  const [teamMembers, setTeamMembers] = useState<UserData[]>([]);
+  const [teams, setTeams] = useState<Teams[]>([]);
 
   React.useEffect(() => {
     let isAborted = false;
@@ -35,6 +39,11 @@ const AppContextProvider: React.FC<PropsWithChildren> = ({children}) => {
   }, []);
 
   React.useEffect(() => {
+      if (!teamId || teamId === currentTeamId) {return () => {};}
+
+      setTeamLead(undefined);
+      setTeamMembers([]);
+
       let isAborted = false;
 
       setIsLoading(true);
@@ -42,22 +51,23 @@ const AppContextProvider: React.FC<PropsWithChildren> = ({children}) => {
           const {teamLeadId, teamMemberIds = []} = await getTeamOverview(teamId);
           if (isAborted) {return;}
 
-          const teamLead = await getUserData(teamLeadId);
-          if (isAborted) {return;}
-
-          const teamMembers = [];
-          for(var teamMemberId of teamMemberIds) {
-              const data = await getUserData(teamMemberId);
-              teamMembers.push(data);
-          }
-          if (isAborted) {return;}
-
-          setPageData({
-              teamLead,
-              teamMembers,
-          });
+          await Promise.all([
+            (async () => {
+              const _teamLead = await getUserData(teamLeadId);
+              if (isAborted) {return;}
+              setTeamLead(_teamLead);
+            })(),
+            (async () => {
+              const _teamMembers = await Promise.all(
+                teamMemberIds.map(getUserData)
+              );
+              if (isAborted) {return;}
+              setTeamMembers(_teamMembers);
+            })(),
+          ]);
       })().then(() => {
         setIsLoading(false);
+        setCurrentTeamId(teamId);
       });
 
       return () => {
@@ -67,7 +77,10 @@ const AppContextProvider: React.FC<PropsWithChildren> = ({children}) => {
 
   return <AppContext.Provider value={{
     isLoading,
-    pageData,
+    teamPageData: {
+      teamLead,
+      teamMembers,
+    },
     teams,
   }}>
     {children}

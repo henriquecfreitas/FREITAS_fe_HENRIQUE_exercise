@@ -8,64 +8,67 @@ import Card from '@Components/Card';
 import {Container} from '@Components/GlobalComponents';
 import Header from '@Components/Header';
 import List from '@Components/List';
+import {Spinner} from '@Components/Spinner';
 
-var mapArray = (users: UserData[]) => {
-    return users.map(u => {
-        var columns = [
-            {
-                key: 'Name',
-                value: `${u.firstName} ${u.lastName}`,
-            },
-            {
-                key: 'Display Name',
-                value: u.displayName,
-            },
-            {
-                key: 'Location',
-                value: u.location,
-            },
-        ];
-        return {
-            id: u.id,
-            url: `/user/${u.id}`,
-            columns,
-            navigationProps: u,
-        };
-    }) as ListItem[];
-};
-
-var mapTeamLead = (teamLead: UserData) => {
+var mapUsers = (users: UserData[]) => users.map(user => {
     var columns = [
         {
-            key: 'Team Lead',
-            value: '',
-        },
-        {
             key: 'Name',
-            value: `${teamLead.firstName} ${teamLead.lastName}`,
+            value: `${user.firstName} ${user.lastName}`,
         },
         {
             key: 'Display Name',
-            value: teamLead.displayName,
+            value: user.displayName,
         },
         {
             key: 'Location',
-            value: teamLead.location,
+            value: user.location,
         },
     ];
-    return <Card columns={columns} url={`/user/${teamLead.id}`} navigationProps={teamLead} />;
-};
+    return {
+        id: user.id,
+        url: `/user/${user.id}`,
+        columns,
+        navigationProps: user,
+    };
+}) as ListItem[];
+
+var teamLeadCols = (teamLead: UserData) => [
+    {
+        key: 'Team Lead',
+        value: '',
+    },
+    {
+        key: 'Name',
+        value: `${teamLead.firstName} ${teamLead.lastName}`,
+    },
+    {
+        key: 'Display Name',
+        value: teamLead.displayName,
+    },
+    {
+        key: 'Location',
+        value: teamLead.location,
+    },
+];
 
 const TeamOverview: React.FC = () => {
     const {state: {name}} = useLocation();
 
-    const {pageData, isLoading} = React.useContext(AppContext);
+    const {
+        teamPageData: {teamLead, teamMembers},
+        isLoading,
+    } = React.useContext(AppContext);
 
     return (
         <Container>
             <Header title={`Team ${name}`} />
-            {!isLoading && mapTeamLead(pageData.teamLead)}
-            <List items={mapArray(pageData?.teamMembers ?? [])} />
+            {teamLead && <Card
+                columns={teamLeadCols(teamLead)}
+                url={`/user/${teamLead.id}`}
+                navigationProps={teamLead}
+            />}
+            {isLoading ? <Spinner /> : <List items={mapUsers(teamMembers)} />}
         </Container>
     );
 };

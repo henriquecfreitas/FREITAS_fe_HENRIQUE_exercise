@@ -29,7 +29,7 @@ const Card: React.FC<Props> = ({
 
     return (
         <Container
-            data-testid={`cardContainer-${id}`}
+            data-testid={`cardContainer${id ? `-${id}` : ''}`}
             hasNavigation={hasNavigation}
             onClick={(e: Event) => {
                 if (hasNavigation) {

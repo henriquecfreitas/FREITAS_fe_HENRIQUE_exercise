@@ -20,20 +20,14 @@ describe('Teams', () => {
         useContextSpy = jest.spyOn(React, "useContext");
     });
 
-    beforeAll(() => {
-        jest.useFakeTimers();
-    });
+    it('should render header and don\'t render items on empty list', async () => {
+        useContextSpy.mockReturnValue({teams: []});
+        render(<Teams />);
 
-    afterEach(() => {
-        jest.clearAllTimers();
-    });
-
-    afterAll(() => {
-        jest.useRealTimers();
-    });
-
-    it('should render spinner while loading', async () => {
-        // TODO - Add code for this test
+        expect(screen.getByTestId('headerContainer')).toBeInTheDocument();
+        await expect(
+            screen.findAllByTestId(/cardContainer/)
+        ).rejects.toBeTruthy();
     });
 
     it('should render teams list', async () => {
@@ -50,7 +44,8 @@ describe('Teams', () => {
 
         render(<Teams />);
 
-        expect(screen.getByText('Team1')).toBeInTheDocument();
-        expect(screen.getByText('Team2')).toBeInTheDocument();
+        await expect(
+            screen.findAllByTestId(/cardContainer/)
+        ).resolves.toHaveLength(2);
     });
 });

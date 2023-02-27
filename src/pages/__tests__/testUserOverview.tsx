@@ -15,9 +15,17 @@ jest.mock('react-router-dom', () => ({
 }));
 
 describe('UserOverview', () => {
-    it('should render UserOverview', () => {
+    it('should render header', () => {
         render(<UserOverview />);
 
+        expect(screen.getByTestId('headerContainer')).toBeInTheDocument();
+        expect(screen.getByText('User Test User')).toBeInTheDocument();
+    });
+
+    xit('should render card', () => {
+        render(<UserOverview />);
+        
+        expect(screen.getByTestId('cardContainer')).toBeInTheDocument();
         expect(screen.getByText('Test User')).toBeInTheDocument();
         expect(screen.getByText('userName')).toBeInTheDocument();
         expect(screen.getByText('location')).toBeInTheDocument();

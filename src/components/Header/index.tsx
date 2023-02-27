@@ -14,7 +14,7 @@ const Header: React.FC<Props> = ({
 }) => {
     const navigate = useNavigate();
     return (
-        <HeaderContainer>
+        <HeaderContainer data-testid="headerContainer">
             <NavigationHeader>
                 {showBackButton && (
                     <BackButton

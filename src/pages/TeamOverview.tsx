@@ -6,7 +6,7 @@ import {AppContext} from '@Context';
 
 import {Card, Container, Header, List, Spinner} from '@Components';
 
-var mapUsers = (users: UserData[]) => users.map(user => {
+var mapUser = (user: UserData): ListItem => {
     var columns = [
         {
             key: 'Name',
@@ -27,25 +27,14 @@ var mapUsers = (users: UserData[]) => users.map(user => {
         columns,
         navigationProps: user,
     };
-}) as ListItem[];
+};
 
 var teamLeadCols = (teamLead: UserData) => [
     {
         key: 'Team Lead',
         value: '',
     },
-    {
-        key: 'Name',
-        value: `${teamLead.firstName} ${teamLead.lastName}`,
-    },
-    {
-        key: 'Display Name',
-        value: teamLead.displayName,
-    },
-    {
-        key: 'Location',
-        value: teamLead.location,
-    },
+    ...(mapUser(teamLead).columns),
 ];
 
 const TeamOverview: React.FC = () => {
@@ -60,11 +49,10 @@ const TeamOverview: React.FC = () => {
         <Container>
             <Header title={`Team ${name}`} />
             {teamLead && <Card
+                {...mapUser(teamLead)}
                 columns={teamLeadCols(teamLead)}
-                url={`/user/${teamLead.id}`}
-                navigationProps={teamLead}
             />}
-            {isLoading ? <Spinner /> : <List items={mapUsers(teamMembers)} />}
+            {isLoading ? <Spinner /> : <List items={teamMembers.map(mapUser)} />}
         </Container>
     );
 };

@@ -1,6 +1,4 @@
-import TeamOverview from '@Pages/TeamOverview';
-import Teams from '@Pages/Teams';
-import UserOverview from '@Pages/UserOverview';
+import {TeamOverview, Teams, UserOverview} from '@Pages';
 
 const routes = [
     {

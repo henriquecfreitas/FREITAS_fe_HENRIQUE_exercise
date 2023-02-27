@@ -3,9 +3,7 @@ import {useLocation} from 'react-router-dom';
 
 import {UserData} from '@Types';
 
-import Card from '@Components/Card';
-import {Container} from '@Components/GlobalComponents';
-import Header from '@Components/Header';
+import {Card, Container, Header} from '@Components';
 
 var cardColumns = (user: UserData) => [
     {

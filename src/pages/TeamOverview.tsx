@@ -4,11 +4,7 @@ import {useLocation} from 'react-router-dom';
 import {ListItem, UserData} from '@Types';
 import {AppContext} from '@Context';
 
-import Card from '@Components/Card';
-import {Container} from '@Components/GlobalComponents';
-import Header from '@Components/Header';
-import List from '@Components/List';
-import {Spinner} from '@Components/Spinner';
+import {Card, Container, Header, List, Spinner} from '@Components';
 
 var mapUsers = (users: UserData[]) => users.map(user => {
     var columns = [

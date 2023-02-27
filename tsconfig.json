@@ -17,11 +17,11 @@
     "outDir": "dist",
     "paths": {
       "@API": ["./api"],
-      "@Components/*": ["./components/*"],
+      "@Components": ["./components"],
       "@Context": ["./contexts"],
       "@ContextProvider": ["./contexts/providers.ts"],
       "@Types": ["./types"],
-      "@Pages/*": ["./pages/*"],
+      "@Pages": ["./pages"],
     }
   },
   "include": ["src"],

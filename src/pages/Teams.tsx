@@ -1,12 +1,9 @@
 import * as React from 'react';
 
 import {ListItem, Teams as TeamsList} from '@Types';
-
 import {AppContext} from '@Context';
 
-import Header from '@Components/Header';
-import List from '@Components/List';
-import {Container} from '@Components/GlobalComponents';
+import {Container, Header, List} from '@Components';
 
 var mapTeams = (teams: TeamsList[]) => {
     return teams.map(team => {

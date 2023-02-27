@@ -73,7 +73,7 @@ const AppContextProvider: React.FC<PropsWithChildren> = ({children}) => {
         return () => {
             isAborted = true;
         };
-    }, [teamId]);
+    }, [teamId, currentTeamId]);
 
     return <AppContext.Provider value={{
         isLoading,

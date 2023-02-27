@@ -3,8 +3,8 @@ import {ListItem} from '@Types';
 
 import {AppContext} from '@Context';
 
-import Card from '@Components/Card';
-import {Spinner} from '@Components/Spinner';
+import Spinner from '../Spinner';
+import Card from '../Card';
 
 import {Container} from './styles';
 

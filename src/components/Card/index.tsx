@@ -24,7 +24,7 @@ const Card: React.FC<Props> = ({
     url,
     hasNavigation = true,
     navigationProps = null,
-}): JSX.Element => {
+}) => {
     const navigate = useNavigate();
 
     return (

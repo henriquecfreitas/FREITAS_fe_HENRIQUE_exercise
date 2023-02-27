@@ -73,6 +73,7 @@
     "linebreak-style": ["error", "unix"],
     "quotes": ["error", "single"],
     "semi": ["error", "always"],
+    "indent": ["error", 4],
     "arrow-body-style": 0,
     "camelcase": 0,
     "no-mixed-operators": 0,

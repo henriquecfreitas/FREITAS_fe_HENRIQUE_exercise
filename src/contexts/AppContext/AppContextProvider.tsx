@@ -2,89 +2,89 @@ import React, {PropsWithChildren, useState} from 'react';
 import {useParams} from 'react-router-dom';
 
 import {
-  getTeamOverview,
-  getUserData,
-  getTeams as fetchTeams,
+    getTeamOverview,
+    getUserData,
+    getTeams as fetchTeams,
 } from '@API';
 import {UserData, Teams} from '@Types';
 
 import AppContext from './AppContext';
 
 const AppContextProvider: React.FC<PropsWithChildren> = ({children}) => {
-  const {teamId} = useParams();
+    const {teamId} = useParams();
 
-  const [currentTeamId, setCurrentTeamId] = useState<string>(undefined);
+    const [currentTeamId, setCurrentTeamId] = useState<string>(undefined);
 
-  const [isLoading, setIsLoading] = useState(false);
-  const [teamLead, setTeamLead] = useState<UserData>(undefined);
-  const [teamMembers, setTeamMembers] = useState<UserData[]>([]);
-  const [teams, setTeams] = useState<Teams[]>([]);
+    const [isLoading, setIsLoading] = useState(false);
+    const [teamLead, setTeamLead] = useState<UserData>(undefined);
+    const [teamMembers, setTeamMembers] = useState<UserData[]>([]);
+    const [teams, setTeams] = useState<Teams[]>([]);
 
-  React.useEffect(() => {
-    let isAborted = false;
+    React.useEffect(() => {
+        let isAborted = false;
 
-    setIsLoading(true);
-    (async () => {
-        const _teams = await fetchTeams();
-        if (isAborted) {return;}
+        setIsLoading(true);
+        (async () => {
+            const _teams = await fetchTeams();
+            if (isAborted) {return;}
 
-        setTeams(_teams);
-    })().then(() => {
-      setIsLoading(false);
-    });
+            setTeams(_teams);
+        })().then(() => {
+            setIsLoading(false);
+        });
 
-    return () => {
-      isAborted = true;
-    };
-  }, []);
+        return () => {
+            isAborted = true;
+        };
+    }, []);
 
-  React.useEffect(() => {
-      if (!teamId || teamId === currentTeamId) {return () => {};}
+    React.useEffect(() => {
+        if (!teamId || teamId === currentTeamId) {return () => {};}
 
-      setTeamLead(undefined);
-      setTeamMembers([]);
+        setTeamLead(undefined);
+        setTeamMembers([]);
 
-      let isAborted = false;
+        let isAborted = false;
 
-      setIsLoading(true);
-      (async () => {
-          const {teamLeadId, teamMemberIds = []} = await getTeamOverview(teamId);
-          if (isAborted) {return;}
+        setIsLoading(true);
+        (async () => {
+            const {teamLeadId, teamMemberIds = []} = await getTeamOverview(teamId);
+            if (isAborted) {return;}
 
-          await Promise.all([
-            (async () => {
-              const _teamLead = await getUserData(teamLeadId);
-              if (isAborted) {return;}
-              setTeamLead(_teamLead);
-            })(),
-            (async () => {
-              const _teamMembers = await Promise.all(
-                teamMemberIds.map(getUserData)
-              );
-              if (isAborted) {return;}
-              setTeamMembers(_teamMembers);
-            })(),
-          ]);
-      })().then(() => {
-        setIsLoading(false);
-        setCurrentTeamId(teamId);
-      });
+            await Promise.all([
+                (async () => {
+                    const _teamLead = await getUserData(teamLeadId);
+                    if (isAborted) {return;}
+                    setTeamLead(_teamLead);
+                })(),
+                (async () => {
+                    const _teamMembers = await Promise.all(
+                        teamMemberIds.map(getUserData)
+                    );
+                    if (isAborted) {return;}
+                    setTeamMembers(_teamMembers);
+                })(),
+            ]);
+        })().then(() => {
+            setIsLoading(false);
+            setCurrentTeamId(teamId);
+        });
 
-      return () => {
-        isAborted = true;
-      };
-  }, [teamId]);
+        return () => {
+            isAborted = true;
+        };
+    }, [teamId]);
 
-  return <AppContext.Provider value={{
-    isLoading,
-    teamPageData: {
-      teamLead,
-      teamMembers,
-    },
-    teams,
-  }}>
-    {children}
-  </AppContext.Provider>;
+    return <AppContext.Provider value={{
+        isLoading,
+        teamPageData: {
+            teamLead,
+            teamMembers,
+        },
+        teams,
+    }}>
+        {children}
+    </AppContext.Provider>;
 };
 
 export default AppContextProvider;

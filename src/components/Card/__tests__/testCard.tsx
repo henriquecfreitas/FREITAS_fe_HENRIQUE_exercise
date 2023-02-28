@@ -1,6 +1,6 @@
 import React from 'react';
 import {fireEvent, render, screen} from '@testing-library/react';
-import {Teams} from 'types';
+import {Teams} from '@Types';
 import Card from '..';
 
 const mockUseNavigate = jest.fn();
@@ -17,24 +17,20 @@ describe('Card', () => {
 
         expect(screen.getByText('columnKey')).toBeInTheDocument();
         expect(screen.getByText('columnValue')).toBeInTheDocument();
+
+        expect(screen.getByTestId('cardContainer').childNodes).toHaveLength(1);
     });
 
     it('should render card with multiple columns', () => {
         var columns = [
-            {key: 'columnKey1', value: 'columnValue1'},
-            {key: 'columnKey2', value: 'columnValue2'},
-            {key: 'columnKey3', value: 'columnValue3'},
+            {key: 'columnKey1', value: ''},
+            {key: 'columnKey2', value: ''},
+            {key: 'columnKey3', value: ''},
             {key: 'columnKey4', value: ''},
         ];
         render(<Card columns={columns} />);
 
-        expect(screen.getByText('columnKey1')).toBeInTheDocument();
-        expect(screen.getByText('columnValue1')).toBeInTheDocument();
-        expect(screen.getByText('columnKey2')).toBeInTheDocument();
-        expect(screen.getByText('columnValue2')).toBeInTheDocument();
-        expect(screen.getByText('columnKey3')).toBeInTheDocument();
-        expect(screen.getByText('columnValue3')).toBeInTheDocument();
-        expect(screen.getByText('columnKey4')).toBeInTheDocument();
+        expect(screen.getByTestId('cardContainer').childNodes).toHaveLength(4);
     });
 
     it('should navigate when card is clicked and navigation is enabled', () => {

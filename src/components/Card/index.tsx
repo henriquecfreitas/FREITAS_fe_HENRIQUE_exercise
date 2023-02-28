@@ -1,31 +1,35 @@
 import * as React from 'react';
 import {useNavigate} from 'react-router-dom';
-import {Teams, UserData} from 'types';
+
+import {Teams, UserData} from '@Types';
+
 import {Container} from './styles';
+
+interface Column {
+    key: string;
+    value: string;    
+}
 
 interface Props {
     id?: string;
     url?: string;
-    columns: Array<{
-        key: string;
-        value: string;
-    }>;
+    columns: Column[];
     hasNavigation?: boolean;
     navigationProps?: UserData | Teams;
 }
 
-const Card = ({
+const Card: React.FC<Props> = ({
     id,
     columns,
     url,
     hasNavigation = true,
     navigationProps = null,
-}: Props): JSX.Element => {
+}) => {
     const navigate = useNavigate();
 
     return (
         <Container
-            data-testid={`cardContainer-${id}`}
+            data-testid={`cardContainer${id ? `-${id}` : ''}`}
             hasNavigation={hasNavigation}
             onClick={(e: Event) => {
                 if (hasNavigation) {

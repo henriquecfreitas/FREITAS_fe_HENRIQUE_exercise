@@ -1,6 +1,5 @@
 import * as React from 'react';
-import {fireEvent, render, screen, waitFor, act} from '@testing-library/react';
-import * as API from '../../api';
+import {render, screen} from '@testing-library/react';
 import Teams from '../Teams';
 
 jest.mock('react-router-dom', () => ({
@@ -16,24 +15,23 @@ jest.mock('react-router-dom', () => ({
 }));
 
 describe('Teams', () => {
-    beforeAll(() => {
-        jest.useFakeTimers();
+    let useContextSpy;
+    beforeEach(() => {
+        useContextSpy = jest.spyOn(React, "useContext");
     });
 
-    afterEach(() => {
-        jest.clearAllTimers();
-    });
+    it('should render header and don\'t render items on empty list', async () => {
+        useContextSpy.mockReturnValue({teams: []});
+        render(<Teams />);
 
-    afterAll(() => {
-        jest.useRealTimers();
-    });
-
-    it('should render spinner while loading', async () => {
-        // TODO - Add code for this test
+        expect(screen.getByTestId('headerContainer')).toBeInTheDocument();
+        await expect(
+            screen.findAllByTestId(/cardContainer/)
+        ).rejects.toBeTruthy();
     });
 
     it('should render teams list', async () => {
-        jest.spyOn(API, 'getTeams').mockResolvedValue([
+        useContextSpy.mockReturnValue({teams: [
             {
                 id: '1',
                 name: 'Team1',
@@ -42,13 +40,12 @@ describe('Teams', () => {
                 id: '2',
                 name: 'Team2',
             },
-        ]);
+        ]});
 
         render(<Teams />);
 
-        await waitFor(() => {
-            expect(screen.getByText('Team1')).toBeInTheDocument();
-        });
-        expect(screen.getByText('Team2')).toBeInTheDocument();
+        await expect(
+            screen.findAllByTestId(/cardContainer/)
+        ).resolves.toHaveLength(2);
     });
 });

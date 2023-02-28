@@ -1,5 +1,6 @@
 import * as React from 'react';
 import {useNavigate} from 'react-router-dom';
+
 import {HeaderContainer, NavigationHeader, BackButton, Title} from './styles';
 
 interface Props {
@@ -7,10 +8,13 @@ interface Props {
     showBackButton?: boolean;
 }
 
-const Header = ({title, showBackButton = true}: Props) => {
+const Header: React.FC<Props> = ({
+    title,
+    showBackButton = true,
+}) => {
     const navigate = useNavigate();
     return (
-        <HeaderContainer>
+        <HeaderContainer data-testid="headerContainer">
             <NavigationHeader>
                 {showBackButton && (
                     <BackButton

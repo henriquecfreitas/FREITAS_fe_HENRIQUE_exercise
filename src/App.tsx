@@ -1,24 +1,25 @@
 import * as React from 'react';
 import {createBrowserRouter, RouterProvider} from 'react-router-dom';
-import TeamOverview from './pages/TeamOverview';
-import Teams from './pages/Teams';
-import UserOverview from './pages/UserOverview';
 
-const App = () => {
-    var router = createBrowserRouter([
-        {
-            path: '/',
-            element: <Teams />,
-        },
-        {
-            path: '/team/:teamId',
-            element: <TeamOverview />,
-        },
-        {
-            path: '/user/:useId',
-            element: <UserOverview />,
-        },
-    ]);
+import {AppContextProvider} from '@ContextProvider';
+
+import routes from './routes';
+
+const withAppContext = (Wraped: React.ComponentType) => (
+    <AppContextProvider>
+        <Wraped />;
+    </AppContextProvider>
+);
+
+const App: React.FC = () => {
+    const router = createBrowserRouter(routes.map(({
+        path,
+        component,
+    }) => ({
+        path,
+        element: withAppContext(component),
+    })));
+
     return <RouterProvider router={router} />;
 };
 

@@ -16,9 +16,12 @@
     "lib": ["DOM", "ESNext", "WebWorker"],
     "outDir": "dist",
     "paths": {
-      "error-boundaries": ["./component/common/ErrorBoundaries.tsx"],
-      "test-utils": ["test-utils"],
-      "@temposoftware/tempo-i18n": ["./translate.ts"]
+      "@API": ["./api"],
+      "@Components": ["./components"],
+      "@Context": ["./contexts"],
+      "@ContextProvider": ["./contexts/providers.ts"],
+      "@Types": ["./types"],
+      "@Pages": ["./pages"],
     }
   },
   "include": ["src"],

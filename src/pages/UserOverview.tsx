@@ -1,36 +1,35 @@
 import * as React from 'react';
 import {useLocation} from 'react-router-dom';
-import {UserData} from 'types';
-import Card from '../components/Card';
-import {Container} from '../components/GlobalComponents';
-import Header from '../components/Header';
 
-var mapU = (user: UserData) => {
-    var columns = [
-        {
-            key: 'Name',
-            value: `${user.firstName} ${user.lastName}`,
-        },
-        {
-            key: 'Display Name',
-            value: user.displayName,
-        },
-        {
-            key: 'Location',
-            value: user.location,
-        },
-    ];
-    return <Card columns={columns} hasNavigation={false} navigationProps={user} />;
-};
+import {UserData} from '@Types';
 
-const UserOverview = () => {
-    const location = useLocation();
+import {Card, Container, Header} from '@Components';
+
+var cardColumns = (user: UserData) => [
+    {
+        key: 'Name',
+        value: `${user.firstName} ${user.lastName}`,
+    },
+    {
+        key: 'Display Name',
+        value: user.displayName,
+    },
+    {
+        key: 'Location',
+        value: user.location,
+    },
+];
+
+const UserOverview: React.FC = () => {
+    const {state: user} = useLocation();
+    const columns = cardColumns(user);
+
     return (
         <Container>
             <Header
-                title={`User ${location.state.firstName} ${location.state.lastName}`}
+                title={`User ${user.firstName} ${user.lastName}`}
             />
-            {mapU(location.state)}
+            <Card columns={columns} hasNavigation={false} navigationProps={user} />
         </Container>
     );
 };

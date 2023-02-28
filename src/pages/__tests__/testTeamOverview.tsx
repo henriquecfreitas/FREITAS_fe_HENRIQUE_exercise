@@ -1,12 +1,11 @@
 import * as React from 'react';
 import {render, screen, waitFor} from '@testing-library/react';
-import * as API from '../../api';
 import TeamOverview from '../TeamOverview';
 
 jest.mock('react-router-dom', () => ({
     useLocation: () => ({
         state: {
-            teamName: 'Some Team',
+            name: 'Some Team',
         },
     }),
     useNavigate: () => ({}),
@@ -16,39 +15,71 @@ jest.mock('react-router-dom', () => ({
 }));
 
 describe('TeamOverview', () => {
-    beforeAll(() => {
-        jest.useFakeTimers();
+    let useContextSpy;
+    beforeEach(() => {
+        useContextSpy = jest.spyOn(React, "useContext");
     });
 
-    afterEach(() => {
-        jest.clearAllTimers();
+    it('should render header and don\'t render items on empty list', async () => {
+        useContextSpy.mockReturnValue({teamPageData: {
+            teamMembers: [],
+        }});
+        render(<TeamOverview />);
+
+        expect(screen.getByTestId('headerContainer')).toBeInTheDocument();
+        expect(screen.getByText('Team Some Team')).toBeInTheDocument();
+
+        await expect(
+            screen.findAllByTestId(/cardContainer/)
+        ).rejects.toBeTruthy();
     });
 
-    afterAll(() => {
-        jest.useRealTimers();
+    it('should render team lead', async () => {
+        const teamLead = {
+            id: '2',
+            firstName: 'John',
+            lastName: 'Smith',
+            displayName: 'userData',
+            location: '',
+            avatar: '',
+        };
+
+        useContextSpy.mockReturnValue({
+            isLoading: false,
+            teamPageData: {
+                teamLead,
+                teamMembers: [],
+            },
+        });
+
+        render(<TeamOverview />);
+
+        expect(screen.getByTestId('cardContainer-2')).toBeInTheDocument();
+        expect(screen.getByText('John Smith')).toBeInTheDocument();
     });
 
     it('should render team overview users', async () => {
-        const teamOverview = {
-            id: '1',
-            teamLeadId: '2',
-            teamMemberIds: ['3', '4', '5'],
-        };
-        const userData = {
-            id: '2',
+
+        const teamMembers = ['3', '4', '5'].map(id => ({
+            id,
             firstName: 'userData',
             lastName: 'userData',
             displayName: 'userData',
             location: '',
             avatar: '',
-        };
-        jest.spyOn(API, 'getTeamOverview').mockImplementationOnce(() => Promise.resolve({} as any));
-        jest.spyOn(API, 'getUserData').mockImplementationOnce(() => Promise.resolve({} as any));
+        }));
+
+        useContextSpy.mockReturnValue({
+            isLoading: false,
+            teamPageData: {
+                teamMembers,
+            },
+        });
 
         render(<TeamOverview />);
 
         await waitFor(() => {
-            expect(screen.queryAllByText('userData')).toHaveLength(4);
+            expect(screen.queryAllByText('userData')).toHaveLength(3);
         });
     });
 });
